@@ -1,6 +1,6 @@
 describe("Set", function () {
   beforeEach(function () {
-    $('#jasmine_content').html("<div id='scoreboard'><div id='score'><p>Score: <span>0</span></p></div></div><div id='game'> </div>");
+    $('#jasmine_content').html("<div id='scoreboard'><div id='score'><p>Score: <span></span></p></div><div id='time'><p>Time: <span></span></p></div></div><div id='game'></div><div id='controls'><a href='#' id='no_set'>No Set</a></div>");
     set.cards = [];
     set.score = 0;
   });
@@ -23,13 +23,19 @@ describe("Set", function () {
       set.onLoad();
       expect($.fn.on).toHaveBeenCalledInTheContextOf($("#game")[0], ["gameOver.set", set.gameOver]);
     });
+
+    it("binds a click handler to the no set button", function () {
+      spyOn($.fn, "click");
+      set.onLoad();
+      expect($.fn.click).toHaveBeenCalledInTheContextOf($("#no_set")[0], [set.noSetClickHandler]);
+    });
   });
 
   describe("newGame", function () {
-    it("should setup the card permutations", function () {
-      spyOn(set, "setupCardPermutations");
+    it("should setup the card combinations", function () {
+      spyOn(set, "setupCardCombinations");
       set.newGame();
-      expect(set.setupCardPermutations).toHaveBeenCalled();
+      expect(set.setupCardCombinations).toHaveBeenCalled();
     });
 
     it("should deal the cards", function () {
@@ -49,24 +55,42 @@ describe("Set", function () {
       expect(card.remove).toHaveBeenCalled();
       expect(set.setScore).toHaveBeenCalledWith(0);
     });
+
+    it("should set the timer interval", function () {
+      set.timerIntervalID = undefined;
+      set.newGame();
+      expect(set.timerIntervalID).not.toBeUndefined();
+    });
+
+    it("should clear the game time", function () {
+      $("#time span").text(45);
+      set.newGame();
+      expect($("#time span").text()).toEqual("0");
+    });
   });
 
   describe("gameOver", function () {
-    //TODO
+    it("should clear the timer interval", function () {
+      set.timerIntervalID = 57;
+      spyOn(window, "clearInterval");
+      set.gameOver();
+      expect(window.clearInterval).toHaveBeenCalledWith(57);
+      expect(set.timerIntervalID).toBeUndefined();
+    });
   });
 
-  describe("setupCardPermutations", function () {
+  describe("setupCardCombinations", function () {
     it("should create 81 card combinations", function () {
       set.permutations = [];
-      set.setupCardPermutations();
+      set.setupCardCombinations();
       expect(set.permutations.length).toEqual(81);
     });
 
-    it("should wipe out any already existing permutations", function () {
+    it("should wipe out any already existing combinations", function () {
       set.permutations = [
         {color : "blue", count : "five", shape : "square", fill : "filled"}
       ];
-      set.setupCardPermutations();
+      set.setupCardCombinations();
       expect(set.permutations.length).toEqual(81);
     });
   });
@@ -192,11 +216,9 @@ describe("Set", function () {
       });
 
       it("should increment the score", function () {
-        spyOn(set, "setScore");
-        set.score = 4;
+        spyOn(set, "incrementScore");
         set.checkGameState();
-        expect(set.score).toEqual(5);
-        expect(set.setScore).toHaveBeenCalledWith(5);
+        expect(set.incrementScore).toHaveBeenCalled();
       });
 
       it("should deal more cards", function () {
@@ -222,11 +244,9 @@ describe("Set", function () {
       });
 
       it("should decrement the score", function () {
-        spyOn(set, "setScore");
-        set.score = 4;
+        spyOn(set, "decrementScore");
         set.checkGameState();
-        expect(set.score).toEqual(3);
-        expect(set.setScore).toHaveBeenCalledWith(3);
+        expect(set.decrementScore).toHaveBeenCalled();
       });
 
       it("should call deactivate on the active cards", function () {
@@ -280,6 +300,52 @@ describe("Set", function () {
       $("#score span").text("5");
       set.setScore(10);
       expect($("#score span").text()).toEqual("10");
+    });
+  });
+
+  describe("incrementScore", function () {
+    it("should call setScore and set the score to be +1", function () {
+      set.score = 3;
+      spyOn(set, "setScore");
+      set.incrementScore();
+      expect(set.setScore).toHaveBeenCalledWith(4);
+      expect(set.score).toEqual(4);
+    });
+  });
+
+  describe("decrementScore", function () {
+    it("should call setScore and set the score to be -1", function () {
+      set.score = 3;
+      spyOn(set, "setScore");
+      set.decrementScore();
+      expect(set.setScore).toHaveBeenCalledWith(2);
+      expect(set.score).toEqual(2);
+    });
+  });
+
+  describe("noSetClickHandler", function () {
+    var event;
+    beforeEach(function () {
+      event = jQuery.Event("click");
+    });
+
+    it("should prevent default behavior", function () {
+      set.noSetClickHandler.apply($("#no_set")[0], [event]);
+      expect(event.isDefaultPrevented()).toBeTruthy();
+    });
+
+    it("should increment the score if there is no set", function () {
+      spyOn(set, "isSetPresent").andReturn(false);
+      spyOn(set, "incrementScore");
+      set.noSetClickHandler.apply($("#no_set")[0], [event]);
+      expect(set.incrementScore).toHaveBeenCalled();
+    });
+
+    it("should decrement the score if there is a set", function () {
+      spyOn(set, "isSetPresent").andReturn(true);
+      spyOn(set, "decrementScore");
+      set.noSetClickHandler.apply($("#no_set")[0], [event]);
+      expect(set.decrementScore).toHaveBeenCalled();
     });
   });
 

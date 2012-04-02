@@ -11,11 +11,13 @@ $(function () {
 
   set.cards = [];
   set.score = 0;
+  set.timerIntervalID = undefined;
 
-  //Bind event handlers, start a new game.
+  // Bind event handlers, start a new game.
   set.onLoad = function () {
     $("#game").on("cardStateChange.set", ".card", set.checkGameState);
     $("#game").on("gameOver.set", set.gameOver);
+    $("#no_set").click(set.noSetClickHandler);
     set.newGame();
   };
 
@@ -24,15 +26,23 @@ $(function () {
     _.each(set.cards, function (card) {card.remove();});
     set.score = 0;
     set.setScore(0);
-    set.setupCardPermutations();
+    set.setupCardCombinations();
     set.dealCards();
+    var time = 0;
+    $("#time span").text(time);
+    set.timerIntervalID = window.setInterval(function () {
+      time += 1;
+      $("#time span").text(time)
+    }, 1000);
   };
 
-  //Handle game over presentation
+  // Handle game over presentation
   set.gameOver = function () {
-
+    window.clearInterval(set.timerIntervalID);
+    set.timerIntervalID = undefined;
   };
 
+  // Add cards to table
   set.dealCards = function (dealExtraCards) {
     while (set.cards.length < (dealExtraCards ? 15 : 12) && set.permutations.length > 0) {
       new set.Card(set.permutations.splice(Math.floor(Math.random() * set.permutations.length), 1)[0]);
@@ -40,7 +50,8 @@ $(function () {
     set.isGameOver();
   };
 
-  set.setupCardPermutations = function () {
+  // Generate all card combinations
+  set.setupCardCombinations = function () {
     set.permutations = [];
     _.each(set.COLORS, function (color) {
       _.each(set.COUNTS, function (count) {
@@ -58,14 +69,13 @@ $(function () {
       function (card) {return card.active;});
     if (activeCards.length === 3) {
       if (set.isSet(activeCards)) {
-        set.score += 1;
+        set.incrementScore();
         _.each(activeCards, function (card) {card.remove();});
         set.dealCards();
       } else {
-        set.score -= 1;
+        set.decrementScore();
         _.each(activeCards, function (card) {card.deactivate();});
       }
-      set.setScore(set.score);
     }
   };
 
@@ -113,6 +123,21 @@ $(function () {
 
   set.setScore = function (newScore) {
     $("#score span").text(newScore);
+  };
+
+  set.incrementScore = function () {
+    set.score += 1;
+    set.setScore(set.score);
+  };
+
+  set.decrementScore = function () {
+    set.score -= 1;
+    set.setScore(set.score);
+  };
+
+  set.noSetClickHandler = function (event) {
+    set.isSetPresent() ? set.decrementScore() : set.incrementScore();
+    event.preventDefault();
   };
 
   set.Card = function (options) {

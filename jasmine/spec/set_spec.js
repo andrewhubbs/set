@@ -334,18 +334,29 @@ describe("Set", function () {
       expect(event.isDefaultPrevented()).toBeTruthy();
     });
 
-    it("should increment the score if there is no set", function () {
-      spyOn(set, "isSetPresent").andReturn(false);
-      spyOn(set, "incrementScore");
-      set.noSetClickHandler.apply($("#no_set")[0], [event]);
-      expect(set.incrementScore).toHaveBeenCalled();
-    });
-
     it("should decrement the score if there is a set", function () {
       spyOn(set, "isSetPresent").andReturn(true);
       spyOn(set, "decrementScore");
       set.noSetClickHandler.apply($("#no_set")[0], [event]);
       expect(set.decrementScore).toHaveBeenCalled();
+    });
+
+    describe("when no set is present", function () {
+      beforeEach(function () {
+        spyOn(set, "isSetPresent").andReturn(false);
+      });
+
+      it("should increment the score", function () {
+        spyOn(set, "incrementScore");
+        set.noSetClickHandler.apply($("#no_set")[0], [event]);
+        expect(set.incrementScore).toHaveBeenCalled();
+      });
+
+      it("should deal additional cards", function () {
+        spyOn(set, "dealCards");
+        set.noSetClickHandler.apply($("#no_set")[0], [event]);
+        expect(set.dealCards).toHaveBeenCalledWith(true);
+      });
     });
   });
 

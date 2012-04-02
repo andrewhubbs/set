@@ -64,6 +64,7 @@ $(function () {
     });
   };
 
+  // Check the active cards for a valid set
   set.checkGameState = function (event) {
     var activeCards = _.select(set.cards,
       function (card) {return card.active;});
@@ -79,6 +80,7 @@ $(function () {
     }
   };
 
+  // Returns true if the 3 cards given are a set, otherwise false
   set.isSet = function (cards) {
     // Returns true if the given cards are a set, otherwise false;
     var colorMatch = (cards[0].properties.color === cards[1].properties.color && cards[0].properties.color === cards[2].properties.color) ||
@@ -92,6 +94,7 @@ $(function () {
     return colorMatch && countMatch && shapeMatch && fillMatch;
   };
 
+  // Returns true if the current board contains a set, otherwise false
   set.isSetPresent = function () {
     var getCombinations = function (n, src, got, all) {
       if (n === 0) {
@@ -112,6 +115,7 @@ $(function () {
     });
   };
 
+  // Returns true an end game condition has been met, otherwise false
   set.isGameOver = function () {
     if (set.permutations.length <= 0 && !set.isSetPresent()) {
       $("#game").trigger("gameOver.set");
@@ -121,22 +125,31 @@ $(function () {
     }
   };
 
+  // Updates the score in the DOM to the given value
   set.setScore = function (newScore) {
     $("#score span").text(newScore);
   };
 
+  // Increments the score by 1
   set.incrementScore = function () {
     set.score += 1;
     set.setScore(set.score);
   };
 
+  // Decrements the score by 1
   set.decrementScore = function () {
     set.score -= 1;
     set.setScore(set.score);
   };
 
+
   set.noSetClickHandler = function (event) {
-    set.isSetPresent() ? set.decrementScore() : set.incrementScore();
+    if (set.isSetPresent()) {
+      set.decrementScore()
+    } else {
+      set.incrementScore();
+      set.dealCards(true);
+    }
     event.preventDefault();
   };
 

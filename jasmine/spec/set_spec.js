@@ -1,6 +1,6 @@
 describe("Set", function () {
   beforeEach(function () {
-    $('#jasmine_content').html("<div id='scoreboard'><div id='score'><p>Score: <span></span></p></div><div id='time'><p>Time: <span></span></p></div></div><div id='game'></div><div id='controls'><a href='#' id='no_set'>No Set</a></div>");
+    $('#jasmine_content').html("<div id='scoreboard'><div id='score'><p>Score: <span></span></p></div><div id='time'><p>Time: <span></span></p></div></div><div id='game'></div><div id='controls'><a href='#' id='no_set'>No Set</a><a href='#' id='hint'>Show hint</a></div>");
     set.cards = [];
     set.score = 0;
   });
@@ -28,6 +28,12 @@ describe("Set", function () {
       spyOn($.fn, "click");
       set.onLoad();
       expect($.fn.click).toHaveBeenCalledInTheContextOf($("#no_set")[0], [set.noSetClickHandler]);
+    });
+
+    it("binds a click handler to the hint button", function () {
+      spyOn($.fn, "click");
+      set.onLoad();
+      expect($.fn.click).toHaveBeenCalledInTheContextOf($("#hint")[0], [set.showHint]);
     });
   });
 
@@ -360,6 +366,39 @@ describe("Set", function () {
         set.noSetClickHandler.apply($("#no_set")[0], [event]);
         expect(set.dealCards).toHaveBeenCalledWith(true);
       });
+    });
+  });
+
+  describe("showHint", function () {
+    var event, redOneOvalSolid, redOneOvalClear, redOneOvalLined;
+    beforeEach(function () {
+      event = jQuery.Event("click");
+      redOneOvalSolid = new set.Card({color : "red", count : "one", shape : "oval", fill : "solid"});
+      redOneOvalClear = new set.Card({color : "red", count : "one", shape : "oval", fill : "clear"});
+      redOneOvalLined = new set.Card({color : "red", count : "one", shape : "oval", fill : "lined"});
+    });
+
+    it("should activate one of the cards in a set", function () {
+      set.showHint.apply($("#hint")[0], [event]);
+      expect(redOneOvalSolid.active).toEqual(true);
+    });
+
+    it("should prevent default link behavior", function () {
+      set.showHint.apply($("#hint")[0], [event]);
+      expect(event.isDefaultPrevented()).toBeTruthy();
+    });
+
+    it("should deactivate any other cards", function () {
+      set.cards[2].activate();
+      set.showHint.apply($("#hint")[0], [event]);
+      expect(set.cards[2].active).toEqual(false);
+    });
+
+    it("should show deal more cards if there is no sets", function () {
+      spyOn(set, "isSet").andReturn(false);
+      spyOn(set, "dealCards");
+      set.showHint.apply($("#hint")[0], [event]);
+      expect(set.dealCards).toHaveBeenCalledWith(true);
     });
   });
 

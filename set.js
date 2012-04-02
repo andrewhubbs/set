@@ -18,6 +18,7 @@ $(function () {
     $("#game").on("cardStateChange.set", ".card", set.checkGameState);
     $("#game").on("gameOver.set", set.gameOver);
     $("#no_set").click(set.noSetClickHandler);
+    $("#hint").click(set.showHint);
     set.newGame();
   };
 
@@ -110,7 +111,7 @@ $(function () {
     };
     var combinations = [];
     getCombinations(3, set.cards, [], combinations);
-    return _.any(combinations, function (combo) {
+    return _.find(combinations, function (combo) {
       return set.isSet(combo);
     });
   };
@@ -142,7 +143,15 @@ $(function () {
     set.setScore(set.score);
   };
 
+  // Activates the first card in a valid set or deals more cards if no sets exist
+  set.showHint = function (event) {
+    _.invoke(set.cards, "deactivate");
+    var validSet = set.isSetPresent();
+    validSet ? validSet[0].activate() : set.dealCards(true);
+    event.preventDefault();
+  };
 
+  // Increments the score and deals cards or decrements the score
   set.noSetClickHandler = function (event) {
     if (set.isSetPresent()) {
       set.decrementScore()
@@ -158,13 +167,13 @@ $(function () {
 
     self.properties = options;
 
+    // Create a card object and register it with the card list
     self.init = function () {
       self.createCard();
-
-      //Register self with card list
       set.cards.push(self);
     };
 
+    // Creates the card DOM element and sets up event handlers
     self.createCard = function () {
       var $game = $("#game");
       if (self.properties.count === "one") {
@@ -180,6 +189,7 @@ $(function () {
       self.$el.click(self.clickHandler);
     };
 
+    // Activate or deactivate the card
     self.clickHandler = function () {
       if (self.active) {
         self.deactivate();
@@ -199,6 +209,7 @@ $(function () {
       self.active = false;
     };
 
+    // Removes the card from the DOM and deletes the object from the set game
     self.remove = function () {
       set.cards.splice(_.indexOf(set.cards, self), 1);
       self.$el.fadeOut(300, function () {

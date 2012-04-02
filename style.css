@@ -1,8 +1,8 @@
-#game, #scoreboard {
+#game, #scoreboard, #controls {
   width: 900px;
   margin: auto;
   border: 1px solid black; }
-  #game .card, #scoreboard .card {
+  #game .card, #scoreboard .card, #controls .card {
     width: 250px;
     padding: 10px;
     height: 150px;
@@ -10,7 +10,7 @@
     border: 1px solid black;
     display: inline-block;
     text-align: center; }
-    #game .card.active, #scoreboard .card.active {
+    #game .card.active, #scoreboard .card.active, #controls .card.active {
       border: 1px solid red; }
 
 svg {

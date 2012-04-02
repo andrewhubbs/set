@@ -1,6 +1,6 @@
 describe("Set", function () {
   beforeEach(function () {
-    $('#jasmine_content').html("<div id='scoreboard'><div id='score'><p>Score: <span></span></p></div><div id='time'><p>Time: <span></span></p></div></div><div id='game'></div><div id='controls'><a href='#' id='no_set'>No Set</a><a href='#' id='hint'>Show hint</a></div>");
+    $('#jasmine_content').html("<div id='scoreboard'><div id='score'><p>Score: <span></span></p></div><div id='time'><p>Time: <span></span></p></div></div><div id='game'></div><div id='controls'><a href='#' id='no_set'>No Set</a><a href='#' id='hint'>Show hint</a><a href='#' id='new_game'>New game</a></div>");
     set.cards = [];
     set.score = 0;
   });
@@ -34,6 +34,12 @@ describe("Set", function () {
       spyOn($.fn, "click");
       set.onLoad();
       expect($.fn.click).toHaveBeenCalledInTheContextOf($("#hint")[0], [set.showHint]);
+    });
+
+    it("binds a click handler to the new game button", function () {
+      spyOn($.fn, "click");
+      set.onLoad();
+      expect($.fn.click).toHaveBeenCalledInTheContextOf($("#new_game")[0], [set.newGame]);
     });
   });
 
@@ -69,9 +75,12 @@ describe("Set", function () {
     });
 
     it("should clear the game time", function () {
+      set.timerIntervalID = 987;
+      spyOn(window, "clearInterval");
       $("#time span").text(45);
       set.newGame();
       expect($("#time span").text()).toEqual("0");
+      expect(window.clearInterval).toHaveBeenCalledWith(987);
     });
   });
 

@@ -19,6 +19,7 @@ $(function () {
     $("#game").on("gameOver.set", set.gameOver);
     $("#no_set").click(set.noSetClickHandler);
     $("#hint").click(set.showHint);
+    $("#new_game").click(set.newGame);
     set.newGame();
   };
 
@@ -29,6 +30,7 @@ $(function () {
     set.setScore(0);
     set.setupCardCombinations();
     set.dealCards();
+    set.timerIntervalID ? window.clearInterval(set.timerIntervalID) : null;
     var time = 0;
     $("#time span").text(time);
     set.timerIntervalID = window.setInterval(function () {

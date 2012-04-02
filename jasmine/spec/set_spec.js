@@ -222,6 +222,9 @@ describe("Set", function () {
       });
 
       it("should deal more cards", function () {
+        spyOn(_, "delay").andCallFake(function (func, wait) {
+          func();
+        });
         spyOn(set, "dealCards");
         set.checkGameState();
         expect(set.dealCards).toHaveBeenCalled();
@@ -450,6 +453,9 @@ describe("Set", function () {
         });
 
         it("remove the element from the dom", function () {
+          spyOn($.fn, "fadeOut").andCallFake(function (time, func) {
+            func();
+          });
           spyOn($.fn, "remove");
           card.remove();
           expect($.fn.remove).toHaveBeenCalledInTheContextOf(card.$el[0]);

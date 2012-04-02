@@ -35,7 +35,7 @@ $(function () {
     $("#time span").text(time);
     set.timerIntervalID = window.setInterval(function () {
       time += 1;
-      $("#time span").text(time)
+      $("#time span").text(time);
     }, 1000);
   };
 

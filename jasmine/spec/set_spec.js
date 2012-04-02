@@ -121,6 +121,17 @@ describe("Set", function () {
       expect(set.cards.length).toEqual(15);
     });
 
+    it("should remove 3 cards and add new ones if there are already 15", function () {
+      set.dealCards(true);
+      var last4Cards = set.cards.slice(11, 14);
+      set.dealCards(true);
+      expect(set.cards.length).toEqual(15);
+      expect(set.cards[11]).toEqual(last4Cards[0]);
+      expect(set.cards[12]).not.toEqual(last4Cards[1]);
+      expect(set.cards[13]).not.toEqual(last4Cards[2]);
+      expect(set.cards[14]).not.toEqual(last4Cards[3]);
+    });
+
     it("should check the game state", function () {
       spyOn(set, "isGameOver");
       set.dealCards();

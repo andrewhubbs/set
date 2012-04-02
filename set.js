@@ -13,7 +13,7 @@ $(function () {
   set.score = 0;
   set.timerIntervalID = undefined;
 
-  // Bind event handlers, start a new game.
+  // Bind event handlers, starts a new game
   set.onLoad = function () {
     $("#game").on("cardStateChange.set", ".card", set.checkGameState);
     $("#game").on("gameOver.set", set.gameOver);
@@ -47,6 +47,9 @@ $(function () {
 
   // Add cards to table
   set.dealCards = function (dealExtraCards) {
+    if (dealExtraCards && set.cards.length === 15) {
+      set.cards.splice(-3, 3);
+    }
     while (set.cards.length < (dealExtraCards ? 15 : 12) && set.permutations.length > 0) {
       new set.Card(set.permutations.splice(Math.floor(Math.random() * set.permutations.length), 1)[0]);
     }

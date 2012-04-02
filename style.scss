@@ -1,0 +1,74 @@
+#game, #scoreboard {
+  width: 900px;
+  margin: auto;
+  border: 1px solid black;
+
+  .card {
+    width: 250px;
+    padding: 10px;
+    height: 150px;
+    margin: 10px;
+    border: 1px solid black;
+    display: inline-block;
+    text-align: center;
+
+    &.active {
+      border: 1px solid red;
+    }
+
+    svg {
+      width: 100px;
+      height: 150px;
+      margin-right: -20px;
+    }
+
+    &.red {
+      fill: #ef0000;
+      stroke: #ef0000;
+    }
+
+    &.green {
+      fill: #00cc00;
+      stroke: #00cc00;
+    }
+
+    &.purple {
+      fill: #990099;
+      stroke: #990099;
+    }
+
+    &.clear polygon {
+      fill: none;
+    }
+
+    &.clear path {
+      fill: none;
+    }
+
+    &.red.lined polygon,
+    &.red.lined path {
+      fill: url(#redstripes);
+    }
+
+    &.green.lined polygon,
+    &.green.lined path {
+      fill: url(#greenstripes);
+    }
+
+    &.purple.lined polygon,
+    &.purple.lined path {
+      fill: url(#purplestripes);
+    }
+
+    &.clear,
+    &.lined {
+      stroke-width: 5;
+    }
+
+    #redstripes,
+    #greenstripes,
+    #purplestripes {
+      stroke-width: 3;
+    }
+  }
+}

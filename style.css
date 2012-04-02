@@ -1,0 +1,43 @@
+#game, #scoreboard {
+  width: 900px;
+  margin: auto;
+  border: 1px solid black; }
+  #game .card, #scoreboard .card {
+    width: 250px;
+    padding: 10px;
+    height: 150px;
+    margin: 10px;
+    border: 1px solid black;
+    display: inline-block;
+    text-align: center; }
+    #game .card.active, #scoreboard .card.active {
+      border: 1px solid red; }
+    #game .card svg, #scoreboard .card svg {
+      width: 100px;
+      height: 150px;
+      margin-right: -20px; }
+    #game .card.red, #scoreboard .card.red {
+      fill: #ef0000;
+      stroke: #ef0000; }
+    #game .card.green, #scoreboard .card.green {
+      fill: #00cc00;
+      stroke: #00cc00; }
+    #game .card.purple, #scoreboard .card.purple {
+      fill: #990099;
+      stroke: #990099; }
+    #game .card.clear polygon, #scoreboard .card.clear polygon {
+      fill: none; }
+    #game .card.clear path, #scoreboard .card.clear path {
+      fill: none; }
+    #game .card.red.lined polygon, #game .card.red.lined path, #scoreboard .card.red.lined polygon, #scoreboard .card.red.lined path {
+      fill: url(#redstripes); }
+    #game .card.green.lined polygon, #game .card.green.lined path, #scoreboard .card.green.lined polygon, #scoreboard .card.green.lined path {
+      fill: url(#greenstripes); }
+    #game .card.purple.lined polygon, #game .card.purple.lined path, #scoreboard .card.purple.lined polygon, #scoreboard .card.purple.lined path {
+      fill: url(#purplestripes); }
+    #game .card.clear, #game .card.lined, #scoreboard .card.clear, #scoreboard .card.lined {
+      stroke-width: 5; }
+    #game .card #redstripes,
+    #game .card #greenstripes,
+    #game .card #purplestripes, #scoreboard .card #redstripes, #scoreboard .card #greenstripes, #scoreboard .card #purplestripes {
+      stroke-width: 3; }

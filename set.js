@@ -25,7 +25,7 @@ $(function () {
   };
 
   // Reset game function
-  set.newGame = function () {
+  set.newGame = function (event) {
     _.each(set.cards, function (card) {card.remove(false);});
     set.score = 0;
     set.setScore(0);
@@ -39,6 +39,9 @@ $(function () {
       $("#time span").text(time);
     }, 1000);
     $("#game_over").hide();
+    if (typeof event !== 'undefined') {
+      event.preventDefault();
+    }
   };
 
   // Handle game over presentation

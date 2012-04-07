@@ -88,6 +88,12 @@ describe("Set", function () {
       set.newGame();
       expect($.fn.hide).toHaveBeenCalledInTheContextOf($("#game_over")[0]);
     });
+
+    it("should prevent default if an event is passed in", function () {
+      var event = jQuery.Event("click");
+      set.newGame.apply($(".new_game")[0], [event]);
+      expect(event.isDefaultPrevented()).toBeTruthy();
+    });
   });
 
   describe("gameOver", function () {

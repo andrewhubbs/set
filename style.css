@@ -20,7 +20,7 @@ body {
     display: inline-block;
     text-align: center; }
     #game .card.active, #scoreboard .card.active {
-      box-shadow: 0 0 5px 2px #0099ff; }
+      box-shadow: 0 0 8px 8px #0099ff; }
 
 a {
   background: #ffffff;
@@ -30,7 +30,7 @@ a {
   background: -o-linear-gradient(top, white 0%, #e6e6e6 100%);
   background: -ms-linear-gradient(top, white 0%, #e6e6e6 100%);
   background: linear-gradient(top, white 0%, #e6e6e6 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e6e6e6',GradientType=0 );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#ffffff', endColorstr = '#e6e6e6', GradientType = 0);
   border: 1px solid rgba(0, 0, 0, 0.5);
   border-radius: 20px;
   color: #666;

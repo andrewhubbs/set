@@ -35,7 +35,12 @@ body {
   width: 500px;
   margin: auto;
 
+  .twitter-share-button {
+    vertical-align: top;
+  }
+
   .credit {
+    margin-top: 8px;
     a {
       background: none;
       color: white;

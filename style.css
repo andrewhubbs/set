@@ -26,18 +26,22 @@ body {
   text-align: center;
   width: 500px;
   margin: auto; }
-  #social .credit a {
-    background: none;
-    color: white;
-    border: none;
-    border-radius: 0;
-    font-weight: normal;
-    margin-right: 0;
-    padding: 0;
-    text-decoration: none;
-    text-shadow: none; }
-    #social .credit a:hover {
-      box-shadow: none; }
+  #social .twitter-share-button {
+    vertical-align: top; }
+  #social .credit {
+    margin-top: 8px; }
+    #social .credit a {
+      background: none;
+      color: white;
+      border: none;
+      border-radius: 0;
+      font-weight: normal;
+      margin-right: 0;
+      padding: 0;
+      text-decoration: none;
+      text-shadow: none; }
+      #social .credit a:hover {
+        box-shadow: none; }
 
 #game_over {
   display: none; }

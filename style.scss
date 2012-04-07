@@ -30,6 +30,29 @@ body {
   }
 }
 
+#social {
+  text-align: center;
+  width: 500px;
+  margin: auto;
+
+  .credit {
+    a {
+      background: none;
+      color: white;
+      border: none;
+      border-radius: 0;
+      font-weight: normal;
+      margin-right: 0;
+      padding: 0;
+      text-decoration: none;
+      text-shadow: none;
+      &:hover {
+        box-shadow: none;
+      }
+    }
+  }
+}
+
 #game_over {
   display: none;
   #overlay {
@@ -59,7 +82,7 @@ body {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     display: block;
     text-align: left;
-    
+
     p {
       padding: 5px 10px 8px;
     }

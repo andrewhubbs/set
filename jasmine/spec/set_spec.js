@@ -1,6 +1,6 @@
 describe("Set", function () {
   beforeEach(function () {
-    $('#jasmine_content').html("<div id='scoreboard'><div id='score'><p>Score: <span></span></p></div><div id='time'><p>Time: <span></span></p></div></div><div id='game'></div><div id='controls'><a href='#' id='no_set'>No Set</a><a href='#' id='hint'>Show hint</a><a href='#' id='new_game'>New game</a></div>");
+    $('#jasmine_content').html("<div id='scoreboard'><div id='score'><p>Score: <span></span></p></div><div id='time'><p>Time: <span></span></p></div><div id='controls'><a href='#' id='no_set'>No Set</a><a href='#' id='hint'>Show hint</a><a href='#' class='new_game'>New game</a></div></div><div id='game'></div><div id='game_over'> <div id='stats'> <p>Score: <span class='score'></span></p> <p>Time: <span class='time'></span></p><p>Your Best Time: <span class='best_time'></span></p><p>You win!</p><a href='#' class='new_game'>New Game</a></div></div>");
     set.cards = [];
     set.score = 0;
   });
@@ -39,7 +39,7 @@ describe("Set", function () {
     it("binds a click handler to the new game button", function () {
       spyOn($.fn, "click");
       set.onLoad();
-      expect($.fn.click).toHaveBeenCalledInTheContextOf($("#new_game")[0], [set.newGame]);
+      expect($.fn.click).toHaveBeenCalledInTheContextOf($(".new_game")[0], [set.newGame]);
     });
   });
 
@@ -57,7 +57,7 @@ describe("Set", function () {
     });
 
     it("should reset the score and cards", function () {
-      new set.Card({color : "red", count : "one", shape : "oval", fill : "solid"});
+      new set.Card({color:"red", count:"one", shape:"oval", fill:"solid"});
       var card = set.cards[0];
       spyOn(card, "remove");
       spyOn(set, "setScore");
@@ -82,6 +82,12 @@ describe("Set", function () {
       expect($("#time span").text()).toEqual("0");
       expect(window.clearInterval).toHaveBeenCalledWith(987);
     });
+
+    it("should hide the game_over div", function () {
+      spyOn($.fn, "hide");
+      set.newGame();
+      expect($.fn.hide).toHaveBeenCalledInTheContextOf($("#game_over")[0]);
+    });
   });
 
   describe("gameOver", function () {
@@ -91,6 +97,40 @@ describe("Set", function () {
       set.gameOver();
       expect(window.clearInterval).toHaveBeenCalledWith(57);
       expect(set.timerIntervalID).toBeUndefined();
+    });
+
+    it("should show the game_over div", function () {
+      spyOn($.fn, "show");
+      set.gameOver();
+      expect($.fn.show).toHaveBeenCalledInTheContextOf($("#game_over")[0]);
+    });
+
+    it("should set the time span in the stats", function () {
+      $("#time span").text("60");
+      set.gameOver();
+      expect($("#game_over .time").text()).toEqual("60");
+    });
+
+    it("should set the score span in the stats", function () {
+      set.score = 20;
+      set.gameOver();
+      expect($("#game_over .score").text()).toEqual("20");
+    });
+
+    it("should update the bestTime where applicable", function () {
+      set.bestTime = 0;
+      $("#time span").text("60");
+      set.gameOver();
+      expect(set.bestTime).toEqual(60);
+      expect($(".best_time").text()).toEqual("60");
+      $("#time span").text("40");
+      set.gameOver();
+      expect(set.bestTime).toEqual(40);
+      expect($(".best_time").text()).toEqual("40");
+      $("#time span").text("50");
+      set.gameOver();
+      expect(set.bestTime).toEqual(40);
+      expect($(".best_time").text()).toEqual("40");
     });
   });
 
@@ -103,7 +143,7 @@ describe("Set", function () {
 
     it("should wipe out any already existing combinations", function () {
       set.permutations = [
-        {color : "blue", count : "five", shape : "square", fill : "filled"}
+        {color:"blue", count:"five", shape:"square", fill:"filled"}
       ];
       set.setupCardCombinations();
       expect(set.permutations.length).toEqual(81);
@@ -144,17 +184,17 @@ describe("Set", function () {
       purpleTwoSquiggleSolid, purpleOneSquiggleSolid, purpleThreeSquiggleSolid,
       greenTwoDiamondSolid, greenOneDiamondSolid, greenThreeDiamondSolid, greenOneDiamondLined;
     beforeEach(function () {
-      redOneOvalSolid = {properties : {color : "red", count : "one", shape : "oval", fill : "solid"}};
-      redOneOvalClear = {properties : {color : "red", count : "one", shape : "oval", fill : "clear"}};
-      redOneOvalLined = {properties : {color : "red", count : "one", shape : "oval", fill : "lined"}};
-      redTwoOvalClear = {properties : {color : "red", count : "two", shape : "oval", fill : "clear"}};
-      purpleTwoSquiggleSolid = {properties : {color : "purple", count : "two", shape : "squiggle", fill : "solid"}};
-      purpleOneSquiggleSolid = {properties : {color : "purple", count : "one", shape : "squiggle", fill : "solid"}};
-      purpleThreeSquiggleSolid = {properties : {color : "purple", count : "three", shape : "squiggle", fill : "solid"}};
-      greenThreeDiamondSolid = {properties : {color : "green", count : "three", shape : "diamond", fill : "solid"}};
-      greenTwoDiamondSolid = {properties : {color : "green", count : "two", shape : "diamond", fill : "solid"}};
-      greenOneDiamondSolid = {properties : {color : "green", count : "one", shape : "diamond", fill : "solid"}};
-      greenOneDiamondLined = {properties : {color : "green", count : "one", shape : "diamond", fill : "lined"}};
+      redOneOvalSolid = {properties:{color:"red", count:"one", shape:"oval", fill:"solid"}};
+      redOneOvalClear = {properties:{color:"red", count:"one", shape:"oval", fill:"clear"}};
+      redOneOvalLined = {properties:{color:"red", count:"one", shape:"oval", fill:"lined"}};
+      redTwoOvalClear = {properties:{color:"red", count:"two", shape:"oval", fill:"clear"}};
+      purpleTwoSquiggleSolid = {properties:{color:"purple", count:"two", shape:"squiggle", fill:"solid"}};
+      purpleOneSquiggleSolid = {properties:{color:"purple", count:"one", shape:"squiggle", fill:"solid"}};
+      purpleThreeSquiggleSolid = {properties:{color:"purple", count:"three", shape:"squiggle", fill:"solid"}};
+      greenThreeDiamondSolid = {properties:{color:"green", count:"three", shape:"diamond", fill:"solid"}};
+      greenTwoDiamondSolid = {properties:{color:"green", count:"two", shape:"diamond", fill:"solid"}};
+      greenOneDiamondSolid = {properties:{color:"green", count:"one", shape:"diamond", fill:"solid"}};
+      greenOneDiamondLined = {properties:{color:"green", count:"one", shape:"diamond", fill:"lined"}};
     });
 
     describe("valid sets", function () {
@@ -230,9 +270,9 @@ describe("Set", function () {
   describe("checkGameState", function () {
     var card1, card2, card3;
     beforeEach(function () {
-      card1 = new set.Card({color : "red", count : "one", shape : "oval", fill : "solid"});
-      card2 = new set.Card({color : "red", count : "one", shape : "oval", fill : "solid"});
-      card3 = new set.Card({color : "red", count : "one", shape : "oval", fill : "solid"});
+      card1 = new set.Card({color:"red", count:"one", shape:"oval", fill:"solid"});
+      card2 = new set.Card({color:"red", count:"one", shape:"oval", fill:"solid"});
+      card3 = new set.Card({color:"red", count:"one", shape:"oval", fill:"solid"});
       spyOn(_, "select").andReturn([card1, card2, card3]);
     });
 
@@ -292,13 +332,13 @@ describe("Set", function () {
 
   describe("isGameOver", function () {
     it("should return false if there are cards still to be dealt", function () {
-      set.permutations.push({color : "red", count : "one", shape : "oval", fill : "solid"});
+      set.permutations.push({color:"red", count:"one", shape:"oval", fill:"solid"});
       expect(set.isGameOver()).toBeFalsy();
     });
 
     it("should not check for a set if there are still cards to be dealt", function () {
       spyOn(set, "isSetPresent");
-      set.permutations.push({color : "red", count : "one", shape : "oval", fill : "solid"});
+      set.permutations.push({color:"red", count:"one", shape:"oval", fill:"solid"});
       set.isGameOver();
       expect(set.isSetPresent).not.toHaveBeenCalled();
     });
@@ -393,9 +433,9 @@ describe("Set", function () {
     var event, redOneOvalSolid, redOneOvalClear, redOneOvalLined;
     beforeEach(function () {
       event = jQuery.Event("click");
-      redOneOvalSolid = new set.Card({color : "red", count : "one", shape : "oval", fill : "solid"});
-      redOneOvalClear = new set.Card({color : "red", count : "one", shape : "oval", fill : "clear"});
-      redOneOvalLined = new set.Card({color : "red", count : "one", shape : "oval", fill : "lined"});
+      redOneOvalSolid = new set.Card({color:"red", count:"one", shape:"oval", fill:"solid"});
+      redOneOvalClear = new set.Card({color:"red", count:"one", shape:"oval", fill:"clear"});
+      redOneOvalLined = new set.Card({color:"red", count:"one", shape:"oval", fill:"lined"});
     });
 
     it("should activate one of the cards in a set", function () {
@@ -426,19 +466,19 @@ describe("Set", function () {
     describe("initialization", function () {
       it("should register itself with the set game", function () {
         set.cards = [];
-        var card = new set.Card({color : "red", count : "one", shape : "oval", fill : "solid"});
+        var card = new set.Card({color:"red", count:"one", shape:"oval", fill:"solid"});
         expect(set.cards).toEqual([card]);
       });
 
       it("should insert a card div into the #game", function () {
         expect($("#game .card.red.one.oval.solid").length).toEqual(0);
-        new set.Card({color : "red", count : "one", shape : "oval", fill : "solid"});
+        new set.Card({color:"red", count:"one", shape:"oval", fill:"solid"});
         expect($("#game .card.red.one.oval.solid").length).toEqual(1);
       });
 
       it("should bind a click handler", function () {
         spyOn($.fn, "click");
-        new set.Card({color : "red", count : "one", shape : "oval", fill : "solid"});
+        new set.Card({color:"red", count:"one", shape:"oval", fill:"solid"});
         expect($.fn.click).toHaveBeenCalledInTheContextOf($("#game .card.red.one.oval.solid")[0], [jasmine.any(Function)]);
       });
     });
@@ -446,7 +486,7 @@ describe("Set", function () {
     describe("instance methods", function () {
       var card;
       beforeEach(function () {
-        card = new set.Card({color : "red", count : "one", shape : "oval", fill : "solid"});
+        card = new set.Card({color:"red", count:"one", shape:"oval", fill:"solid"});
       });
 
       describe("clickHandler", function () {
@@ -488,7 +528,7 @@ describe("Set", function () {
       describe("deactivate", function () {
         var card;
         beforeEach(function () {
-          card = new set.Card({color : "red", count : "one", shape : "oval", fill : "solid"});
+          card = new set.Card({color:"red", count:"one", shape:"oval", fill:"solid"});
         });
 
         it("should set the active property to false", function () {

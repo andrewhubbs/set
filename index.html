@@ -4,26 +4,53 @@
   <script type="text/javascript" src="underscore.js"></script>
   <script type="text/javascript" src="set.js"></script>
   <link href="style.css" type="text/css" media="screen" rel="stylesheet">
-<title>Set</title>
+  <title>Set</title>
 </head>
 <body>
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="http://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
 <div id="scoreboard" class="clearfix">
-	<div id="score">
-	  <p>Score: <span></span></p>
-	</div>
+  <div id="score">
+    <p>Score: <span></span></p>
+  </div>
 
-	<div id="time">
-	  <p>Time: <span></span></p>
-	</div>
+  <div id="time">
+    <p>Time: <span></span></p>
+  </div>
 
-	<div id="controls">
-	  <a href="#" id="no_set">No Set</a>
-	  <a href="#" id="hint">Show Hint</a>
-	  <a href="#" id="new_game">New Game</a>
-	</div>
+  <div id="controls">
+    <a href="#" id="no_set">No Set</a>
+    <a href="#" id="hint">Show Hint</a>
+    <a href="#" class="new_game">New Game</a>
+  </div>
 </div>
 <div id='game'>
 
+</div>
+<div id='social'>
+  <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://hub.bs/set/" data-text="Check out HTML5 Set the card game" data-hashtags="html5set">Tweet</a>
+  <div class="fb-like" data-href="http://hub.bs/set/" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true" data-font="arial"></div>
+</div>
+
+<div id='game_over'>
+  <div id='overlay'></div>
+  <div id='stats'>
+    <p>Score: <span class='score'></span></p>
+    <p>Time: <span class='time'></span></p>
+    <p>Your Best Time: <span class='best_time'></span></p>
+    <p>You win!</p>
+    <a href='#' class='new_game'>New Game</a>
+    <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://hub.bs/set/" data-text="Check out HTML5 Set the card game" data-hashtags="html5set">Tweet</a>
+    <div class="fb-like" data-href="http://hub.bs/set/" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true" data-font="arial"></div>
+  </div>
 </div>
 
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 125 200" enable-background="new 0 0 125 200" xml:space="preserve">

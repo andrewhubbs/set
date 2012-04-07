@@ -151,14 +151,22 @@ $(function () {
 
   // Increments the score by 1
   set.incrementScore = function () {
+    $("#score").removeClass("decrement").addClass("glow increment");
     set.score += 1;
     set.setScore(set.score);
+    _.delay(function () {
+      $("#score").removeClass("glow increment");
+    }, 500);
   };
 
   // Decrements the score by 1
   set.decrementScore = function () {
+    $("#score").removeClass("increment").addClass("glow decrement");
     set.score -= 1;
     set.setScore(set.score);
+    _.delay(function () {
+      $("#score").removeClass("glow decrement");
+    }, 500);
   };
 
   // Activates the first card in a valid set or deals more cards if no sets exist

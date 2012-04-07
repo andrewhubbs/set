@@ -386,6 +386,35 @@ describe("Set", function () {
       expect(set.setScore).toHaveBeenCalledWith(4);
       expect(set.score).toEqual(4);
     });
+
+    it("should add the glow class to the #score", function () {
+      $("#score").removeClass("glow");
+      set.incrementScore();
+      expect($("#score")).toHaveClass("glow");
+    });
+
+    it("should add the increment class to the #score", function () {
+      $("#score").removeClass("increment");
+      set.incrementScore();
+      expect($("#score")).toHaveClass("increment");
+    });
+
+    it("should remove the decrement class to the #score", function () {
+      $("#score").addClass("decrement");
+      set.incrementScore();
+      expect($("#score")).not.toHaveClass("decrement");
+    });
+
+    it("should remove the glow and increment classes after a delay", function () {
+      $("#score").addClass("glow increment");
+      spyOn(_, "delay").andCallFake(function(func, wait){
+        func();
+      });
+        set.incrementScore();
+      expect(_.delay).toHaveBeenCalledWith(jasmine.any(Function), 500);
+      expect($("#score")).not.toHaveClass("glow");
+      expect($("#score")).not.toHaveClass("increment");
+    });
   });
 
   describe("decrementScore", function () {
@@ -395,6 +424,35 @@ describe("Set", function () {
       set.decrementScore();
       expect(set.setScore).toHaveBeenCalledWith(2);
       expect(set.score).toEqual(2);
+    });
+    
+    it("should add the glow class to the #score", function () {
+      $("#score").removeClass("glow");
+      set.decrementScore();
+      expect($("#score")).toHaveClass("glow");
+    });
+
+    it("should add the decrement class to the #score", function () {
+      $("#score").removeClass("decrement");
+      set.decrementScore();
+      expect($("#score")).toHaveClass("decrement");
+    });
+
+    it("should remove the increment class to the #score", function () {
+      $("#score").addClass("increment");
+      set.decrementScore();
+      expect($("#score")).not.toHaveClass("increment");
+    });
+
+    it("should remove the glow and decrement classes after a delay", function () {
+      $("#score").addClass("glow decrement");
+      spyOn(_, "delay").andCallFake(function(func, wait){
+        func();
+      });
+        set.decrementScore();
+      expect(_.delay).toHaveBeenCalledWith(jasmine.any(Function), 500);
+      expect($("#score")).not.toHaveClass("glow");
+      expect($("#score")).not.toHaveClass("decrement");
     });
   });
 

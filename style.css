@@ -110,6 +110,24 @@ a {
     color: #fff;
     font-size: 24px;
     font-weight: bold; }
+    #scoreboard #score.glow span,
+    #scoreboard #time.glow span {
+      -webkit-stroke-width: 5.3px;
+      -webkit-transition: width 0.3s;
+      /*Safari & Chrome*/
+      transition: width 0.3s;
+      -moz-transition: width 0.3s;
+      /* Firefox 4 */
+      -o-transition: width 0.3s;
+      /* Opera */
+      -webkit-stroke-color: #FFFFFF;
+      -webkit-fill-color: #FFFFFF; }
+    #scoreboard #score.increment span,
+    #scoreboard #time.increment span {
+      text-shadow: 1px 1px 20px #00cc00; }
+    #scoreboard #score.decrement span,
+    #scoreboard #time.decrement span {
+      text-shadow: 1px 1px 20px red; }
   #scoreboard #score {
     float: left;
     margin-left: 20px; }

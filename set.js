@@ -26,8 +26,7 @@ $(function () {
 
   // Reset game function
   set.newGame = function () {
-    _.each(set.cards, function (card) {card.remove();});
-    $("#game_over").hide();
+    _.each(set.cards, function (card) {card.remove(false);});
     set.score = 0;
     set.setScore(0);
     set.setupCardCombinations();
@@ -39,6 +38,7 @@ $(function () {
       time += 1;
       $("#time span").text(time);
     }, 1000);
+    $("#game_over").hide();
   };
 
   // Handle game over presentation
@@ -48,7 +48,7 @@ $(function () {
     var gameTime = parseInt($("#time span").text());
     $("#game_over .time").text(gameTime);
     $("#game_over .score").text(set.score);
-    if(gameTime < set.bestTime || set.bestTime === 0) {
+    if (gameTime < set.bestTime || set.bestTime === 0) {
       set.bestTime = gameTime;
       $(".best_time").text(set.bestTime);
     }
@@ -225,11 +225,16 @@ $(function () {
     };
 
     // Removes the card from the DOM and deletes the object from the set game
-    self.remove = function () {
+    self.remove = function (animate) {
+      animate = typeof animate !== 'undefined' ? animate : true;
       set.cards.splice(_.indexOf(set.cards, self), 1);
-      self.$el.fadeOut(300, function () {
+      if (animate) {
+        self.$el.fadeOut(300, function () {
+          self.$el.remove();
+        });
+      } else {
         self.$el.remove();
-      });
+      }
     };
 
     self.init();

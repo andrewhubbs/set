@@ -142,17 +142,17 @@ describe("Set", function () {
 
   describe("setupCardCombinations", function () {
     it("should create 81 card combinations", function () {
-      set.permutations = [];
+      set.combinations = [];
       set.setupCardCombinations();
-      expect(set.permutations.length).toEqual(81);
+      expect(set.combinations.length).toEqual(81);
     });
 
     it("should wipe out any already existing combinations", function () {
-      set.permutations = [
+      set.combinations = [
         {color:"blue", count:"five", shape:"square", fill:"filled"}
       ];
       set.setupCardCombinations();
-      expect(set.permutations.length).toEqual(81);
+      expect(set.combinations.length).toEqual(81);
     });
   });
 
@@ -338,32 +338,32 @@ describe("Set", function () {
 
   describe("isGameOver", function () {
     it("should return false if there are cards still to be dealt", function () {
-      set.permutations.push({color:"red", count:"one", shape:"oval", fill:"solid"});
+      set.combinations.push({color:"red", count:"one", shape:"oval", fill:"solid"});
       expect(set.isGameOver()).toBeFalsy();
     });
 
     it("should not check for a set if there are still cards to be dealt", function () {
       spyOn(set, "isSetPresent");
-      set.permutations.push({color:"red", count:"one", shape:"oval", fill:"solid"});
+      set.combinations.push({color:"red", count:"one", shape:"oval", fill:"solid"});
       set.isGameOver();
       expect(set.isSetPresent).not.toHaveBeenCalled();
     });
 
     it("should return false if there is still a set present", function () {
-      set.permutations = [];
+      set.combinations = [];
       spyOn(set, "isSetPresent").andReturn(true);
       expect(set.isGameOver()).toBeFalsy();
     });
 
     it("should return true if there are no more cards and there are no more sets", function () {
-      set.permutations = [];
+      set.combinations = [];
       spyOn(set, "isSetPresent").andReturn(false);
       expect(set.isGameOver()).toBeTruthy();
     });
 
     it("should trigger a gameOver.set event if the game is over", function () {
       spyOn($.fn, "trigger");
-      set.permutations = [];
+      set.combinations = [];
       spyOn(set, "isSetPresent").andReturn(false);
       set.isGameOver();
       expect($.fn.trigger).toHaveBeenCalledInTheContextOf($("#game")[0], ["gameOver.set"]);

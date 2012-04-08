@@ -7,7 +7,7 @@ $(function () {
   set.COUNTS = ["one", "two", "three"];
   set.SHAPES = ["diamond", "oval", "squiggle"];
   set.FILLS = ["solid", "clear", "lined"];
-  set.permutations = [];
+  set.combinations = [];
 
   set.cards = [];
   set.score = 0;
@@ -63,20 +63,20 @@ $(function () {
     if (dealExtraCards && set.cards.length === 15) {
       set.cards.splice(-3, 3);
     }
-    while (set.cards.length < (dealExtraCards ? 15 : 12) && set.permutations.length > 0) {
-      new set.Card(set.permutations.splice(Math.floor(Math.random() * set.permutations.length), 1)[0]);
+    while (set.cards.length < (dealExtraCards ? 15 : 12) && set.combinations.length > 0) {
+      new set.Card(set.combinations.splice(Math.floor(Math.random() * set.combinations.length), 1)[0]);
     }
     set.isGameOver();
   };
 
   // Generate all card combinations
   set.setupCardCombinations = function () {
-    set.permutations = [];
+    set.combinations = [];
     _.each(set.COLORS, function (color) {
       _.each(set.COUNTS, function (count) {
         _.each(set.SHAPES, function (shape) {
           _.each(set.FILLS, function (fill) {
-            set.permutations.push({color:color, count:count, shape:shape, fill:fill});
+            set.combinations.push({color:color, count:count, shape:shape, fill:fill});
           });
         });
       });
@@ -136,7 +136,7 @@ $(function () {
 
   // Returns true an end game condition has been met, otherwise false
   set.isGameOver = function () {
-    if (set.permutations.length <= 0 && !set.isSetPresent()) {
+    if (set.combinations.length <= 0 && !set.isSetPresent()) {
       $("#game").trigger("gameOver.set");
       return true;
     } else {
@@ -178,7 +178,7 @@ $(function () {
         badCards = _.without(badCards, el);
       });
       _.invoke(badCards, "deactivate");
-      validSet[0].active ? (validSet[1].active ? validSet[2].activate() : validSet[1].activate()): validSet[0].activate();
+      validSet[0].active ? (validSet[1].active ? validSet[2].activate() : validSet[1].activate()) : validSet[0].activate();
     } else {
       _.invoke(set.cards, "deactivate");
       set.dealCards(true);

@@ -171,9 +171,18 @@ $(function () {
 
   // Activates the first card in a valid set or deals more cards if no sets exist
   set.showHint = function (event) {
-    _.invoke(set.cards, "deactivate");
     var validSet = set.isSetPresent();
-    validSet ? validSet[0].activate() : set.dealCards(true);
+    if (validSet) {
+      var badCards = set.cards;
+      _.each(validSet, function (el) {
+        badCards = _.without(badCards, el);
+      });
+      _.invoke(badCards, "deactivate");
+      validSet[0].active ? (validSet[1].active ? validSet[2].activate() : validSet[1].activate()): validSet[0].activate();
+    } else {
+      _.invoke(set.cards, "deactivate");
+      set.dealCards(true);
+    }
     event.preventDefault();
   };
 

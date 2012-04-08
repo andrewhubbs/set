@@ -494,12 +494,13 @@ describe("Set", function () {
   });
 
   describe("showHint", function () {
-    var event, redOneOvalSolid, redOneOvalClear, redOneOvalLined;
+    var event, redOneOvalSolid, redOneOvalClear, redOneOvalLined, otherCard;
     beforeEach(function () {
       event = jQuery.Event("click");
       redOneOvalSolid = new set.Card({color:"red", count:"one", shape:"oval", fill:"solid"});
       redOneOvalClear = new set.Card({color:"red", count:"one", shape:"oval", fill:"clear"});
       redOneOvalLined = new set.Card({color:"red", count:"one", shape:"oval", fill:"lined"});
+      otherCard = new set.Card({color:"green", count:"two", shape:"oval", fill:"lined"});
     });
 
     it("should activate one of the cards in a set", function () {
@@ -513,9 +514,9 @@ describe("Set", function () {
     });
 
     it("should deactivate any other cards", function () {
-      set.cards[2].activate();
+      set.cards[3].activate();
       set.showHint.apply($("#hint")[0], [event]);
-      expect(set.cards[2].active).toEqual(false);
+      expect(set.cards[3].active).toEqual(false);
     });
 
     it("should show deal more cards if there is no sets", function () {
@@ -523,6 +524,14 @@ describe("Set", function () {
       spyOn(set, "dealCards");
       set.showHint.apply($("#hint")[0], [event]);
       expect(set.dealCards).toHaveBeenCalledWith(true);
+    });
+
+    it("should activate the second card in the set if the first is already active", function () {
+      redOneOvalSolid.activate();
+      set.showHint.apply($("#hint")[0], [event]);
+      expect(redOneOvalClear.active).toEqual(true);
+      set.showHint.apply($("#hint")[0], [event]);
+      expect(redOneOvalLined.active).toEqual(true);
     });
   });
 

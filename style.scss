@@ -55,6 +55,18 @@ body {
       text-decoration: none;
     }
   }
+  .creators {
+    float: left;
+    clear: both;
+    margin: 10px;
+    font-size: 12px;
+    margin-right: 10px;
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+  }
 }
 
 #game_over {

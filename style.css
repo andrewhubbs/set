@@ -41,6 +41,15 @@ body {
     #social .credit a {
       color: white;
       text-decoration: none; }
+  #social .creators {
+    float: left;
+    clear: both;
+    margin: 10px;
+    font-size: 12px;
+    margin-right: 10px; }
+    #social .creators a {
+      color: white;
+      text-decoration: none; }
 
 #game_over {
   display: none; }

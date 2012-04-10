@@ -1,0 +1,7 @@
+Set the game.
+
+Built with Javascript, jQuery, Underscore, SVG, SASS and Jasmine.
+
+Best viewed in a Webkit based or Mobile browser.
+
+FF/IE is not currently displaying the SVG images correctly (or possibly at all).

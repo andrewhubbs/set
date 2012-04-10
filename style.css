@@ -24,7 +24,8 @@ body {
       box-shadow: 0 0 10px 7px #0099ff; }
 
 #social {
-  margin-top: 20px; }
+  margin-top: 20px;
+  overflow: hidden; }
   #social .twitter-share-button {
     float: left;
     margin-left: 10px;
